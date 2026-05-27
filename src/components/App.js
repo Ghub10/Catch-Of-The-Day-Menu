@@ -7,6 +7,8 @@ import sampleFishes from "../sample-fishes";
 import Fish from "./Fish";
 import base from "../base";
 
+const DEMO_STORE_ID = "sirnetz";
+
 class App extends React.Component {
   state = {
     fishes: {},
@@ -15,6 +17,7 @@ class App extends React.Component {
 
   sampleFishesLoaded = false;
   syncTimer = null;
+  isDemoStore = false;
 
   static propTypes = {
     match: PropTypes.object,
@@ -26,6 +29,14 @@ class App extends React.Component {
     const localStorageRef = localStorage.getItem(params.storeId);
     if (localStorageRef) {
       this.setState({ order: JSON.parse(localStorageRef) });
+    }
+
+    this.isDemoStore = params.storeId === DEMO_STORE_ID;
+
+    if (this.isDemoStore) {
+      this.sampleFishesLoaded = true;
+      this.setState({ fishes: sampleFishes });
+      return;
     }
 
     this.ref = base.syncState(`${params.storeId}/fishes`, {
@@ -46,6 +57,10 @@ class App extends React.Component {
       JSON.stringify(this.state.order)
     );
 
+    if (this.isDemoStore) {
+      return;
+    }
+
     if (
       prevState.fishes !== this.state.fishes
       && !this.sampleFishesLoaded
@@ -58,7 +73,9 @@ class App extends React.Component {
 
   componentWillUnmount() {
     clearTimeout(this.syncTimer);
-    base.removeBinding(this.ref);
+    if (this.ref) {
+      base.removeBinding(this.ref);
+    }
   }
 
   countFishes = fishes =>
@@ -101,9 +118,12 @@ class App extends React.Component {
 
   render() {
     const isAdmin = this.props.location.search.includes("?");
+    const layoutClass = isAdmin
+      ? "catch-of-the-day"
+      : "catch-of-the-day catch-of-the-day--visitor";
 
     return (
-      <div className="catch-of-the-day">
+      <div className={layoutClass}>
         <div className="menu">
           <Header tagline="Fresh Seafood Market" />
           <ul className="fishes">

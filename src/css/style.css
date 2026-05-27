@@ -336,6 +336,30 @@ header.top h3:after {
 input#fold:not(:checked) ~ #main .catch-of-the-day > * {
   transform: none;
 }
+
+.catch-of-the-day--visitor {
+  perspective: none;
+  transform-style: flat;
+}
+
+.catch-of-the-day--visitor > * {
+  transform: none;
+  flex: 1 1 auto;
+  overflow: auto;
+}
+
+.catch-of-the-day--visitor > *:first-child {
+  flex: 1.5 1 60%;
+  flex-basis: auto;
+}
+
+.catch-of-the-day--visitor > *:nth-child(2) {
+  flex: 1 1 40%;
+  flex-basis: auto;
+  min-width: 280px;
+  border-left: 1rem double #1a1a1a;
+}
+
 label[for="fold"] {
   position: absolute;
   top: 1rem;

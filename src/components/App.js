@@ -117,13 +117,8 @@ class App extends React.Component {
   };
 
   render() {
-    const isAdmin = this.props.location.search.includes("?");
-    const layoutClass = isAdmin
-      ? "catch-of-the-day"
-      : "catch-of-the-day catch-of-the-day--visitor";
-
     return (
-      <div className={layoutClass}>
+      <div className="catch-of-the-day">
         <div className="menu">
           <Header tagline="Fresh Seafood Market" />
           <ul className="fishes">
@@ -144,15 +139,13 @@ class App extends React.Component {
           order={this.state.order}
           removeFromOrder={this.removeFromOrder}
         />
-        {isAdmin && (
-          <Inventory
-            addFish={this.addFish}
-            updateFish={this.updateFish}
-            deleteFish={this.deleteFish}
-            loadSampleFishes={this.loadSampleFishes}
-            fishes={this.state.fishes}
-          />
-        )}
+        <Inventory
+          addFish={this.addFish}
+          updateFish={this.updateFish}
+          deleteFish={this.deleteFish}
+          loadSampleFishes={this.loadSampleFishes}
+          fishes={this.state.fishes}
+        />
       </div>
     );
   }
